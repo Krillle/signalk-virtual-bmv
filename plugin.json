@@ -1,0 +1,21 @@
+{
+  "id": "signalk-virtual-bmv",
+  "name": "Virtual BMV",
+  "description": "Inject battery data from Signal K into Venus OS as a virtual Victron BMV monitor.",
+  "version": "1.0.0",
+  "keywords": ["victron", "cerbo", "venus", "bmv", "dbus", "signalk"],
+  "author": "Christian Wegerhoff",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Krillle/signalk-virtual-bmv"
+  },
+  "homepage": "https://github.com/Krillle/signalk-virtual-bmv",
+  "engines": {
+    "signalk-server": ">=1.39.0"
+  },
+  "signalK": {
+    "pluginSchema": "index.js"
+  },
+  "main": "index.js"
+}
