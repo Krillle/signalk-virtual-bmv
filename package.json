@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "description": "Simulates a Victron BMV-602S by injecting battery data from Signal K into the Victron D-Bus via Venus OS.",
   "keywords": [
-    "signalk",
-    "plugin",
+    "signalk-node-server-plugin",
+    "signalk-category-output",
     "victron",
-    "venus-os",
-    "bmv",
+    "venus",
     "dbus",
-    "battery-monitor"
+    "bmv",
+    "battery",
+    "monitor"
   ],
   "author": "Christian Wegerhoff",
   "license": "MIT",
