@@ -18,18 +18,14 @@ Simulates a Victron BMV-602S battery monitor by injecting battery data from Sign
 
 - Signal K server running on a Raspberry Pi or similar device
 - Victron Cerbo GX with Venus OS (on the same network)
-- SSH access to the Cerbo GX
-- D-Bus over TCP must be enabled:
-
-```bash
-dbus -y com.victronenergy.settings /Settings/Services/InsecureDbusOverTcp SetValue 1
-```
+- SSH access to the Cerbo GX (see step 1)
+- D-Bus over TCP must be enabled (see step 2)
 
 ---
 
 ## 📦 Installation
 
-0. Enable SSH on the Cerbo GX
+1. Enable SSH on the Cerbo GX
 
 You can do this via:
 
@@ -47,19 +43,27 @@ ssh root@venus.local
 
 (Default user is `root`, no password needed by default.)
 
-1. Clone or copy this plugin folder into:
-   ```bash
-   ~/.signalk/node_modules/signalk-virtual-bmv
-   ```
 
-2. Inside the plugin folder, install dependencies:
-   ```bash
-   npm install
-   ```
+2. Enable D-Bus over TCP on the Cerbo GX
 
-3. Restart Signal K, then open the **Plugin Config** section in the Signal K web UI.
+This step allows external devices (like your Raspberry Pi) to access the Victron D-Bus remotely via TCP on port 78. It is required so the plugin can simulate a BMV device over the network.
 
-4. Enable **Virtual BMV** and configure the connection settings.
+```bash
+ssh root@venus.local
+dbus -y com.victronenergy.settings /Settings/Services/InsecureDbusOverTcp SetValue 1
+netstat -tuln | grep :78
+```
+
+
+3. Install the plugin
+
+Look for `signalk-virtual-bmv`in the Signal K app store.  
+
+To install manually, close or copy the plugin folder into `~/.signalk/node_modules/signalk-virtual-bmv` and install dependecies with `npm install` inside the plugin folder.
+
+5. Restart Signal K, then open the **Plugin Config** section in the Signal K web UI.
+
+6. Enable **Virtual BMV** and configure the connection settings.
 
 ---
 
