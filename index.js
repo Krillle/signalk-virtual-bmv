@@ -11,9 +11,9 @@ module.exports = function(app) {
   const VBUS_SERVICE = 'com.victronenergy.battery.ttyVirtualBMV';
   const OBJECT_PATH = '/com/victronenergy/battery/ttyVirtualBMV';
 
-  plugin.id = 'signalk-virtual-bmv-full';
-  plugin.name = 'Virtual BMV with D-Bus Registration';
-  plugin.description = 'Simulates a VE.Direct BMV 602S device over D-Bus';
+  plugin.id = 'signalk-virtual-bmv';
+  plugin.name = 'Virtual Battery Monitor';
+  plugin.description = 'Emulates a VE.Direct BMV 602S device by injecting battery data into the Victron Cerbo GX.';
 
   plugin.schema = {
     type: 'object',
@@ -21,7 +21,7 @@ module.exports = function(app) {
       productName: {
         type: 'string',
         title: 'Product Name (shown in Venus/VRM)',
-        default: 'BMV 602-S'
+        default: 'Signal K Virtual BMV'
       },
       venusHost: {
         type: 'string',
@@ -31,7 +31,7 @@ module.exports = function(app) {
       interval: {
         type: 'number',
         title: 'Update interval (ms)',
-        default: 5000
+        default: 1000
       },
       paths: {
         type: 'object',
@@ -39,19 +39,16 @@ module.exports = function(app) {
         properties: {
           voltage: { type: 'string', default: 'electrical.batteries.0.voltage' },
           current: { type: 'string', default: 'electrical.batteries.0.current' },
-          soc: { type: 'string', default: 'electrical.batteries.0.soc' },
-          temp: { type: 'string', default: 'electrical.batteries.0.temperature' },
-          consumedAh: { type: 'string', default: 'electrical.batteries.0.capacity.consumed' },
-          timeToGo: { type: 'string', default: 'electrical.batteries.0.timeRemaining' },
+          soc: { type: 'string', default: 'electrical.batteries.0.capacity.stateOfCharge' },
+          timeToGo: { type: 'string', default: 'electrical.batteries.0.capacity.timeRemaining' },
           voltageStarter: { type: 'string', default: 'electrical.batteries.1.voltage' },
-          relayState: { type: 'string', default: 'electrical.batteries.0.relay' }
         }
       }
     }
   };
 
   plugin.start = async function(options) {
-    app.setPluginStatus('Starting virtual BMV plugin...');
+    app.setPluginStatus('Starting virtual BMV plugin');
     const { venusHost, paths, interval: updateInterval, productName } = options;
     const address = `tcp:host=${venusHost},port=78`;
 
@@ -79,32 +76,26 @@ module.exports = function(app) {
       '/Dc/0/Voltage': 0,
       '/Dc/0/Current': 0,
       '/Soc': 0,
-      '/Dc/0/Temperature': 0,
-      '/ConsumedAmphours': 0,
       '/TimeToGo': 0,
       '/Dc/1/Voltage': 0,
-      '/Relay/0/State': 0,
       '/ProductName': productName || 'BMV 602-S'
     };
 
     const interfaces = {};
     const labels = {
-  '/Mgmt/ProcessName': 'Process Name',
-  '/Mgmt/Connection': 'Connection Type',
-  '/Connected': 'Connection Status',
-  '/FirmwareVersion': 'Firmware Version',
-  '/Dc/0/Voltage': 'Battery Voltage',
-  '/Dc/0/Current': 'Battery Current',
-  '/Soc': 'State of Charge',
-  '/Dc/0/Temperature': 'Battery Temperature',
-  '/ConsumedAmphours': 'Consumed Ah',
-  '/TimeToGo': 'Time Remaining',
-  '/Dc/1/Voltage': 'Starter Voltage',
-  '/Relay/0/State': 'Relay State',
-  '/ProductName': 'Device Name'
-};
+      '/Mgmt/ProcessName': 'Process Name',
+      '/Mgmt/Connection': 'Connection Type',
+      '/Connected': 'Connection Status',
+      '/FirmwareVersion': 'Firmware Version',
+      '/Dc/0/Voltage': 'Battery Voltage',
+      '/Dc/0/Current': 'Battery Current',
+      '/Soc': 'State of Charge',
+      '/TimeToGo': 'Time Remaining',
+      '/Dc/1/Voltage': 'Starter Voltage',
+      '/ProductName': 'Device Name'
+    };
 
-for (const path in values) {
+    for (const path in values) {
       const variantType = typeof values[path] === 'string' ? 's' : 'd';
       interfaces[path] = DBusInterface(ifaceDesc, {
         _label: labels[path],
@@ -138,11 +129,8 @@ for (const path in values) {
       values['/Dc/0/Voltage'] = getVal(paths.voltage) || 0;
       values['/Dc/0/Current'] = getVal(paths.current) || 0;
       values['/Soc'] = getVal(paths.soc) || 0;
-      values['/Dc/0/Temperature'] = getVal(paths.temp) || 0;
-      values['/ConsumedAmphours'] = getVal(paths.consumedAh) || 0;
       values['/TimeToGo'] = getVal(paths.timeToGo) || 0;
       values['/Dc/1/Voltage'] = getVal(paths.voltageStarter) || 0;
-      values['/Relay/0/State'] = getVal(paths.relayState) || 0;
 
       for (const path in values) {
         if (interfaces[path]) {
@@ -165,7 +153,7 @@ for (const path in values) {
       }
       bus.disconnect();
     }
-  };;
+  };
 
   return plugin;
 };
