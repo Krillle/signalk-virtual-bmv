@@ -13,9 +13,6 @@
     "monitor"
   ],
   "signalk-plugin-enabled-by-default": true,
-  "signalk": {
-    "displayName": "Virtual Battery Monitor"
-  },
   "author": "Christian Wegerhoff",
   "license": "MIT",
   "main": "index.js",
