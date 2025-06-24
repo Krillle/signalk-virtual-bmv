@@ -67,7 +67,7 @@ module.exports = function(app) {
 
       app.debug(`Connected to Venus OS D-Bus at ${venusHost}:78`);
     } catch (err) {
-      app.setPluginError(`Failed to connect to D-Bus: ${err.message}`);
+      app.setPluginError(`Failed to connect to D-Bus${err.message ? `: ${err.message}` : ''}`);
       return;
     }
 
