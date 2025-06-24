@@ -2,12 +2,12 @@
 // Full D-Bus service registration with value injection for BMV-602S
 
 const dbus = require('dbus-next');
-const { Variant } = dbus;
+const { Variant, MessageBus } = dbus;
 const DBusInterface = dbus.interface;
 
 module.exports = function(app) {
   const plugin = {};
-  let bus, interval;
+  let bus, interval, interfaces = {};
   const VBUS_SERVICE = 'com.victronenergy.battery.ttyVirtualBMV';
   const OBJECT_PATH = '/com/victronenergy/battery/ttyVirtualBMV';
 
@@ -50,15 +50,22 @@ module.exports = function(app) {
   plugin.start = async function(options) {
     app.setPluginStatus('Starting virtual BMV plugin');
     const { venusHost, paths, interval: updateInterval, productName } = options;
-    const address = `tcp:host=${venusHost},port=78`;
 
     try {
-      bus = dbus.createConnection({ busAddress: address });
+      // Create TCP connection to Venus OS D-Bus
+      const net = require('net');
+      const socket = net.createConnection(78, venusHost);
+      
+      // Wait for socket to connect
+      await new Promise((resolve, reject) => {
+        socket.on('connect', resolve);
+        socket.on('error', reject);
+      });
+
+      bus = new MessageBus(socket);
       await bus.requestName(VBUS_SERVICE);
 
-      bus.on('message', (msg) => {
-        app.debug('DBus message:', msg);
-      });
+      app.debug(`Connected to Venus OS D-Bus at ${venusHost}:78`);
     } catch (err) {
       app.setPluginError(`Failed to connect to D-Bus: ${err.message}`);
       return;
@@ -90,7 +97,6 @@ module.exports = function(app) {
       '/ProductName': productName || 'BMV 602-S'
     };
 
-    const interfaces = {};
     const labels = {
       '/Mgmt/ProcessName': 'Process Name',
       '/Mgmt/Connection': 'Connection Type',
