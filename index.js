@@ -53,8 +53,13 @@ module.exports = function(app) {
     const address = `tcp:host=${venusHost},port=78`;
 
     try {
-      bus = await dbus.connect(address);
+      bus = dbus.messageBus({ busAddress: address });
       await bus.requestName(VBUS_SERVICE);
+
+      // Debugging: Log all messages on the bus
+      bus.on('message', (msg) => {
+        app.debug('DBus message:', msg);
+      });
     } catch (err) {
       app.setPluginError(`Failed to connect to D-Bus: ${err.message}`);
       return;
