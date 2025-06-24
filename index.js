@@ -2,7 +2,7 @@
 // Full D-Bus service registration with value injection for BMV-602S
 
 const dbus = require('dbus-next');
-const { Variant, MessageBus } = dbus;
+const { Variant } = dbus;
 const DBusInterface = dbus.interface;
 
 module.exports = function(app) {
@@ -53,7 +53,7 @@ module.exports = function(app) {
     const address = `tcp:host=${venusHost},port=78`;
 
     try {
-      bus = new MessageBus({ busAddress: address });
+      bus = await dbus.connectBus({ busAddress: address });
       await bus.requestName(VBUS_SERVICE);
 
       // Debugging: Log all messages on the bus
