@@ -59,7 +59,7 @@ netstat -tuln | grep :78
 
 Look for `signalk-virtual-bmv`in the Signal K app store.  
 
-To install manually, close or copy the plugin folder into `~/.signalk/node_modules/signalk-virtual-bmv` and install dependecies with `npm install` inside the plugin folder.
+To install manually, clone or copy the plugin folder into `~/.signalk/node_modules/signalk-virtual-bmv` and install dependecies with `npm install` inside the plugin folder.
 
 5. Restart Signal K, then open the **Plugin Config** section in the Signal K web UI.
 

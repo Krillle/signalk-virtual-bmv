@@ -52,7 +52,7 @@ module.exports = function(app) {
     const { venusHost, paths, interval: updateInterval, productName } = options;
     const address = `tcp:host=${venusHost},port=78`;
 
-    bus = dbus.messageBus({ busAddress: address });
+    bus = new dbus.MessageBus({ busAddress: address });
     await bus.requestName(VBUS_SERVICE);
 
     const ifaceDesc = {
