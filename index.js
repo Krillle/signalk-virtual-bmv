@@ -2,9 +2,8 @@
 // Full D-Bus service registration with value injection for BMV-602S
 
 const dbus = require('dbus-next');
-const { Variant } = dbus;
+const { Variant, MessageBus } = dbus;
 const DBusInterface = dbus.interface;
-const MessageBus = require('dbus-next/lib/message-bus').MessageBus;
 
 module.exports = function(app) {
   const plugin = {};
@@ -42,7 +41,7 @@ module.exports = function(app) {
           current: { type: 'string', default: 'electrical.batteries.0.current' },
           soc: { type: 'string', default: 'electrical.batteries.0.capacity.stateOfCharge' },
           timeToGo: { type: 'string', default: 'electrical.batteries.0.capacity.timeRemaining' },
-          voltageStarter: { type: 'string', default: 'electrical.batteries.1.voltage' },
+          voltageStarter: { type: 'string', default: 'electrical.batteries.1.voltage' }
         }
       }
     }
