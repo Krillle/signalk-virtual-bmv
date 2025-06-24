@@ -52,8 +52,13 @@ module.exports = function(app) {
     const { venusHost, paths, interval: updateInterval, productName } = options;
     const address = `tcp:host=${venusHost},port=78`;
 
-    bus = new dbus.MessageBus({ busAddress: address });
-    await bus.requestName(VBUS_SERVICE);
+    try {
+      bus = dbus.createConnection({ busAddress: address });
+      await bus.requestName(VBUS_SERVICE);
+    } catch (err) {
+      app.setPluginError(`Failed to connect to D-Bus: ${err.message}`);
+      return;
+    }
 
     const ifaceDesc = {
       name: 'com.victronenergy.BusItem',
@@ -145,13 +150,13 @@ module.exports = function(app) {
     }, updateInterval || 5000);
   };
 
-  plugin.stop = function() {
+  plugin.stop = async function() {
     if (interval) clearInterval(interval);
     if (bus) {
       for (const path in interfaces) {
         bus.unexport(`${OBJECT_PATH}${path}`);
       }
-      bus.disconnect();
+      await bus.disconnect();
     }
   };
 
