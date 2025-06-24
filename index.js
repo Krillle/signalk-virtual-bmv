@@ -53,8 +53,7 @@ module.exports = function(app) {
     const address = `tcp:host=${venusHost},port=78`;
 
     try {
-      bus = new dbus.MessageBus({ busAddress: address });
-      await bus.connection.ready;
+      bus = dbus.createConnection({ busAddress: address });
       await bus.requestName(VBUS_SERVICE);
 
       bus.on('message', (msg) => {
