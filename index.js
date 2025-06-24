@@ -56,18 +56,33 @@ module.exports = function(app) {
       const net = require('net');
       const socket = net.createConnection(78, venusHost);
       
+      // Set connection timeout
+      socket.setTimeout(5000);
+      
       // Wait for socket to connect
       await new Promise((resolve, reject) => {
         socket.on('connect', resolve);
-        socket.on('error', reject);
+        socket.on('error', (err) => {
+          reject(new Error(`Cannot connect to Venus OS at ${venusHost}:78 - ${err.code || err.message}`));
+        });
+        socket.on('timeout', () => {
+          socket.destroy();
+          reject(new Error(`Connection timeout to Venus OS at ${venusHost}:78`));
+        });
       });
 
       bus = new MessageBus(socket);
       await bus.requestName(VBUS_SERVICE);
 
       app.debug(`Connected to Venus OS D-Bus at ${venusHost}:78`);
+      app.setPluginStatus(`Connected to Venus OS at ${venusHost}`);
     } catch (err) {
-      app.setPluginError(`Failed to connect to D-Bus${err.message ? `: ${err.message}` : ''}`);
+      const errorMsg = `Venus OS not reachable: ${err.message}`;
+      app.setPluginError(errorMsg);
+      app.debug(errorMsg);
+      
+      // For testing without Venus OS, you could optionally start in simulation mode
+      // app.setPluginStatus('Running in simulation mode (no Venus OS connection)');
       return;
     }
 
