@@ -4,7 +4,6 @@
 const dbus = require('dbus-next');
 const { Variant } = dbus;
 const DBusInterface = dbus.interface;
-const MessageBus = require('dbus-next/lib/messagebus').MessageBus;
 
 module.exports = function(app) {
   const plugin = {};
@@ -54,7 +53,7 @@ module.exports = function(app) {
     const address = `tcp:host=${venusHost},port=78`;
 
     try {
-      bus = new MessageBus({ busAddress: address });
+      bus = await dbus.connect(address);
       await bus.requestName(VBUS_SERVICE);
     } catch (err) {
       app.setPluginError(`Failed to connect to D-Bus: ${err.message}`);
