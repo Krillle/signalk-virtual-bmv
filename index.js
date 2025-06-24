@@ -4,6 +4,7 @@
 const dbus = require('dbus-next');
 const { Variant } = dbus;
 const DBusInterface = dbus.interface;
+const MessageBus = require('dbus-next/lib/message-bus').MessageBus;
 
 module.exports = function(app) {
   const plugin = {};
@@ -53,7 +54,7 @@ module.exports = function(app) {
     const address = `tcp:host=${venusHost},port=78`;
 
     try {
-      bus = dbus.messageBus({ busAddress: address });
+      bus = new MessageBus({ busAddress: address });
       await bus.requestName(VBUS_SERVICE);
 
       // Debugging: Log all messages on the bus
