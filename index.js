@@ -49,7 +49,23 @@ module.exports = function(app) {
 
   plugin.start = async function(options) {
     app.setPluginStatus('Starting virtual BMV plugin');
-    const { venusHost, paths, interval: updateInterval, productName } = options;
+    
+    // Ensure we have valid options with defaults
+    const config = {
+      venusHost: 'venus.local',
+      interval: 1000,
+      productName: 'Signal K Virtual BMV',
+      paths: {
+        voltage: 'electrical.batteries.0.voltage',
+        current: 'electrical.batteries.0.current',
+        soc: 'electrical.batteries.0.capacity.stateOfCharge',
+        timeToGo: 'electrical.batteries.0.capacity.timeRemaining',
+        voltageStarter: 'electrical.batteries.1.voltage'
+      },
+      ...options
+    };
+    
+    const { venusHost, paths, interval: updateInterval, productName } = config;
 
     try {
       // Create TCP connection to Venus OS D-Bus
@@ -80,9 +96,6 @@ module.exports = function(app) {
       const errorMsg = `Venus OS not reachable: ${err.message}`;
       app.setPluginError(errorMsg);
       app.debug(errorMsg);
-      
-      // For testing without Venus OS, you could optionally start in simulation mode
-      // app.setPluginStatus('Running in simulation mode (no Venus OS connection)');
       return;
     }
 
