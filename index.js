@@ -122,7 +122,7 @@ module.exports = function(app) {
       '/Soc': 0,
       '/TimeToGo': 0,
       '/Dc/1/Voltage': 0,
-      '/ProductName': productName || 'BMV 602-S'
+      '/ProductName': productName || 'Signal K Virtual BMV'
     };
 
     const labels = {

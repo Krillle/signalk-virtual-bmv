@@ -1,6 +1,6 @@
 # Signal K Virtual BMV Plugin
 
-Emulates a Victron BMV-602S battery monitor by injecting battery data from Signal K into Venus OS (Victron D-Bus) as a virtual device.
+Emulates a VE.direct battery monitor by injecting battery data from Signal K into Venus OS (Victron D-Bus) as a virtual device.
 
 ---
 
