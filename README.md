@@ -61,9 +61,13 @@ Look for `signalk-virtual-bmv`in the Signal K app store.
 
 To install manually, clone or copy the plugin folder into `~/.signalk/node_modules/signalk-virtual-bmv` and install dependecies with `npm install` inside the plugin folder.
 
-5. Restart Signal K, then open the **Plugin Config** section in the Signal K web UI.
+5. Restart Signal K server
 
-6. Enable **Virtual BMV** and configure the connection settings.
+The plug in is enabled by default and should work right away with default settings. 
+
+6. Error "Venus OS not reachable: Connection timeout to Venus OS at venus.local:78"
+
+If you find **signalk-virtual-bmv** getting a timeout connecting to Venus OS, your Cerbo GX is not reachable at **venus.local**. Open the **Plugin Config** section in the Signal K web UI and configure the connection settings.
 
 ---
 
@@ -72,15 +76,15 @@ To install manually, clone or copy the plugin folder into `~/.signalk/node_modul
 | Option               | Description                                      | Default                                  |
 |----------------------|--------------------------------------------------|------------------------------------------|
 | `venusHost`          | IP or hostname of the Cerbo GX                   | `venus.local`                            |
-| `interval`           | Update interval in milliseconds                  | `5000`                                   |
-| `productName`        | Name shown in VRM / Venus OS                     | `BMV 602-S`                              |
+| `interval`           | Update interval in milliseconds                  | `1000`                                   |
+| `productName`        | Name shown in VRM / Venus OS                     | `Signal K Virtual BMV`                   |
 | `paths.voltage`      | Signal K path for battery voltage                | `electrical.batteries.0.voltage`         |
 | `paths.current`      | Signal K path for battery current                | `electrical.batteries.0.current`         |
 | `paths.soc`          | Signal K path for state of charge                | `electrical.batteries.0.soc`             |
 | `paths.temp`         | Signal K path for battery temperature            | `electrical.batteries.0.temperature`     |
 | `paths.consumedAh`   | Signal K path for consumed Ah                    | `electrical.batteries.0.capacity.consumed` |
 | `paths.timeToGo`     | Signal K path for remaining time estimate        | `electrical.batteries.0.timeRemaining`   |
-| `paths.voltageStarter` | Starter battery voltage path                 | `electrical.batteries.1.voltage`         |
+| `paths.voltageStarter` | Starter battery voltage path                   | `electrical.batteries.1.voltage`         |
 | `paths.relayState`   | Relay state path                                 | `electrical.batteries.0.relay`           |
 
 ---
