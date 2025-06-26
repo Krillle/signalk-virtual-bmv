@@ -113,7 +113,7 @@ module.exports = function(app) {
     };
 
     let values = {
-      '/Mgmt/ProcessName': 'signalk-virtual-bmv',
+      '/Mgmt/ProcessName': 'signalk-virtual-device',
       '/Mgmt/Connection': `tcp://${venusHost}`,
       '/Connected': 1,
       '/FirmwareVersion': '1.0',

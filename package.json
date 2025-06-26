@@ -1,7 +1,7 @@
 {
   "name": "signalk-virtual-bmv",
-  "version": "1.0.1",
-  "description": "Emulates a direct battery monitor by injecting battery data from Signal K into the Victron Cerbo GX D-Bus via Venus OS.",
+  "version": "1.0.2",
+  "description": "Emulates a VE.direct battery monitor by injecting battery data from Signal K into the Victron Cerbo GX D-Bus via Venus OS.",
   "keywords": [
     "signalk-node-server-plugin",
     "signalk-category-output",

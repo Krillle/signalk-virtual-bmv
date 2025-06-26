@@ -6,11 +6,10 @@ Emulates a VE.direct battery monitor by injecting battery data from Signal K int
 
 ## ✅ Features
 
-- Full D-Bus registration on the Cerbo GX
 - Supports voltage, current, SoC, temperature, consumed Ah, time to go, starter voltage, relay state
-- Exposes metadata (`/ProductName`, `/FirmwareVersion`, `/Mgmt/*`)
 - Real-time status reporting to the Signal K dashboard
 - Compatible with VRM and GX Touch interface
+- Exposes metadata '/Mgmt/ProcessName': 'signalk-virtual-device' to distinguish it from real devices
 
 ---
 
