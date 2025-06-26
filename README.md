@@ -4,7 +4,7 @@ Emulates a VE.direct battery monitor by injecting battery data from Signal K int
 
 ---
 
-## ✅ Features
+## Features
 
 - Supports voltage, current, SoC, temperature, consumed Ah, time to go, starter voltage, relay state
 - Real-time status reporting to the Signal K dashboard
@@ -13,7 +13,7 @@ Emulates a VE.direct battery monitor by injecting battery data from Signal K int
 
 ---
 
-## 🔧 Requirements
+## Requirements
 
 - Signal K server running on a Raspberry Pi or similar device
 - Victron Cerbo GX with Venus OS (on the same network)
@@ -22,9 +22,9 @@ Emulates a VE.direct battery monitor by injecting battery data from Signal K int
 
 ---
 
-## 📦 Installation
+## Installation
 
-1. Enable SSH on the Cerbo GX
+**1. Enable SSH on the Cerbo GX**
 
 You can do this via:
 
@@ -43,7 +43,7 @@ ssh root@venus.local
 (Default user is `root`, no password needed by default.)
 
 
-2. Enable D-Bus over TCP on the Cerbo GX
+**2. Enable D-Bus over TCP on the Cerbo GX**
 
 This step allows external devices (like your Raspberry Pi) to access the Victron D-Bus remotely via TCP on port 78. It is required so the plugin can simulate a BMV device over the network.
 
@@ -54,23 +54,23 @@ netstat -tuln | grep :78
 ```
 
 
-3. Install the plugin
+**3. Install the plugin**
 
 Look for `signalk-virtual-bmv`in the Signal K app store.  
 
 To install manually, clone or copy the plugin folder into `~/.signalk/node_modules/signalk-virtual-bmv` and install dependecies with `npm install` inside the plugin folder.
 
-5. Restart Signal K server
+**4. Restart Signal K server**
 
 The plug in is enabled by default and should work right away with default settings. 
 
-6. Error "Venus OS not reachable: Connection timeout to Venus OS at venus.local:78"
+**Error "Venus OS not reachable: Connection timeout to Venus OS at venus.local:78"**
 
 If you find **signalk-virtual-bmv** getting a timeout connecting to Venus OS, your Cerbo GX is not reachable at **venus.local**. Open the **Plugin Config** section in the Signal K web UI and configure the connection settings.
 
 ---
 
-## ⚙️ Configuration Options
+## Configuration Options
 
 | Option               | Description                                      | Default                                  |
 |----------------------|--------------------------------------------------|------------------------------------------|
@@ -88,7 +88,7 @@ If you find **signalk-virtual-bmv** getting a timeout connecting to Venus OS, yo
 
 ---
 
-## 📡 Output
+## Output
 
 The plugin creates a virtual Victron D-Bus service:
 
@@ -100,7 +100,7 @@ This will appear in Venus OS as a second battery monitor (BMV), visible on the G
 
 ---
 
-## 🧪 Testing
+## Testing
 
 To verify D-Bus registration:
 
@@ -112,7 +112,5 @@ Or check on the Cerbo GX under:
 **Settings → Services → Battery Monitor**
 
 ---
-
-## 📝 License
 
 MIT © Christian Wegerhoff
