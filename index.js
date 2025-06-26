@@ -20,7 +20,7 @@ module.exports = function(app) {
     properties: {
       productName: {
         type: 'string',
-        title: 'Product Name (shown in Venus/VRM)',
+        title: 'Product Name (shown on GX Touch and VRM)',
         default: 'Signal K Virtual BMV'
       },
       venusHost: {
@@ -37,11 +37,11 @@ module.exports = function(app) {
         type: 'object',
         title: 'Signal K paths to use',
         properties: {
-          voltage: { type: 'string', default: 'electrical.batteries.0.voltage' },
-          current: { type: 'string', default: 'electrical.batteries.0.current' },
-          soc: { type: 'string', default: 'electrical.batteries.0.capacity.stateOfCharge' },
-          timeToGo: { type: 'string', default: 'electrical.batteries.0.capacity.timeRemaining' },
-          voltageStarter: { type: 'string', default: 'electrical.batteries.1.voltage' }
+          voltage: { type: 'string', title: 'Battery Voltage', default: 'electrical.batteries.0.voltage' },
+          current: { type: 'string', title: 'Battery Current', default: 'electrical.batteries.0.current' },
+          soc: { type: 'string', title: 'State of Charge', default: 'electrical.batteries.0.capacity.stateOfCharge' },
+          timeToGo: { type: 'string', title: 'Time Remaining', default: 'electrical.batteries.0.capacity.timeRemaining' },
+          voltageStarter: { type: 'string', title: 'Starter Battery Voltage', default: 'electrical.batteries.1.voltage' }
         }
       }
     }
